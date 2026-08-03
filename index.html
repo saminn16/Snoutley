@@ -4,15 +4,46 @@
   <meta charset="UTF-8">
   <title>Snoutley – Löydetty koira</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fefcf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#15211d" media="(prefers-color-scheme: dark)">
   <style>
+    :root {
+      --bg: #fefcf9;
+      --glow: #fefcf9;
+      --text-strong: #213731;
+      --text-muted: rgba(33, 55, 49, 0.65);
+      --text-faint: rgba(33, 55, 49, 0.45);
+      --text-faintest: rgba(33, 55, 49, 0.35);
+      --button-bg: #ee8b00;
+      --button-bg-hover: #d17c00;
+      --button-text: #213731;
+      --link-underline: rgba(33, 55, 49, 0.25);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #15211d;
+        --glow: #15211d;
+        --text-strong: #fefcf9;
+        --text-muted: rgba(254, 252, 249, 0.72);
+        --text-faint: rgba(254, 252, 249, 0.5);
+        --text-faintest: rgba(254, 252, 249, 0.38);
+        --button-bg: #ee8b00;
+        --button-bg-hover: #ffa020;
+        --button-text: #213731;
+        --link-underline: rgba(254, 252, 249, 0.3);
+      }
+    }
+
     html, body {
       height: 100%;
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background-color: #fefcf9;
-      color: #333333;
+      background-color: var(--bg);
+      color: var(--text-strong);
       display: flex;
       flex-direction: column;
+      transition: background-color 0.2s ease;
     }
     @font-face {
       font-family: 'SnoutleyFont';
@@ -50,9 +81,9 @@
     }
     .greeting {
       font-size: 1.1rem;
-      color: #666;
+      color: var(--text-muted);
       margin-bottom: 0.2rem;
-      text-shadow: 0 0 12px #fefcf9, 0 0 20px #fefcf9, 0 0 30px #fefcf9;
+      text-shadow: 0 0 12px var(--glow), 0 0 20px var(--glow), 0 0 30px var(--glow);
     }
     .pet-name {
       font-family: 'SnoutleyFont', sans-serif;
@@ -61,20 +92,21 @@
       letter-spacing: 1px;
       margin: 0.4rem 0 0.8rem;
       text-transform: uppercase;
-      text-shadow: 0 0 12px #fefcf9, 0 0 20px #fefcf9, 0 0 30px #fefcf9;
+      color: var(--text-strong);
+      text-shadow: 0 0 12px var(--glow), 0 0 20px var(--glow), 0 0 30px var(--glow);
     }
     .lost-message {
       font-size: 1.1rem;
-      color: #666;
+      color: var(--text-muted);
       margin-bottom: 2.5rem;
-      text-shadow: 0 0 12px #fefcf9, 0 0 20px #fefcf9, 0 0 30px #fefcf9;
+      text-shadow: 0 0 12px var(--glow), 0 0 20px var(--glow), 0 0 30px var(--glow);
     }
     .button {
       padding: 1.1rem 2.2rem;
       font-size: 1.35rem;
       font-weight: bold;
-      color: #fff;
-      background-color: #ee8b00;
+      color: var(--button-text);
+      background-color: var(--button-bg);
       border: none;
       border-radius: 10px;
       text-decoration: none;
@@ -85,12 +117,12 @@
       gap: 0.2rem;
     }
     .button:hover {
-      background-color: #d17c00;
+      background-color: var(--button-bg-hover);
     }
     .button-number {
       font-size: 1rem;
       font-weight: normal;
-      opacity: 0.9;
+      opacity: 0.85;
     }
     .owner-info {
       margin-top: 2rem;
@@ -98,22 +130,22 @@
     .info {
       font-size: 1.1rem;
       margin: 0.2rem 0;
-      color: #444;
-      text-shadow: 0 0 12px #fefcf9, 0 0 20px #fefcf9, 0 0 30px #fefcf9;
+      color: var(--text-strong);
+      text-shadow: 0 0 12px var(--glow), 0 0 20px var(--glow), 0 0 30px var(--glow);
     }
     .section-title {
       font-size: 0.85rem;
       font-weight: 400;
       margin-top: 2rem;
       margin-bottom: 0.3rem;
-      color: #999;
+      color: var(--text-faint);
       letter-spacing: 0.03em;
-      text-shadow: 0 0 12px #fefcf9, 0 0 20px #fefcf9;
+      text-shadow: 0 0 12px var(--glow), 0 0 20px var(--glow);
     }
     .allergy-info {
       font-size: 1.1rem;
-      color: #444;
-      text-shadow: 0 0 12px #fefcf9, 0 0 20px #fefcf9, 0 0 30px #fefcf9;
+      color: var(--text-strong);
+      text-shadow: 0 0 12px var(--glow), 0 0 20px var(--glow), 0 0 30px var(--glow);
     }
     .logo {
       max-width: 100px;
@@ -121,20 +153,31 @@
       margin-bottom: 0.8rem;
       opacity: 0.6;
     }
+    .logo-dark {
+      display: none;
+    }
+    @media (prefers-color-scheme: dark) {
+      .logo-light {
+        display: none;
+      }
+      .logo-dark {
+        display: block;
+      }
+    }
     .powered-by {
       font-size: 0.75rem;
-      color: #bbb;
+      color: var(--text-faintest);
       margin-bottom: 0;
-      text-shadow: 0 0 12px #fefcf9, 0 0 20px #fefcf9;
+      text-shadow: 0 0 12px var(--glow), 0 0 20px var(--glow);
     }
     .powered-by a {
-      color: #bbb;
+      color: var(--text-faintest);
       text-decoration: none;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid var(--link-underline);
     }
     .powered-by a:hover {
-      color: #888;
-      border-bottom-color: #aaa;
+      color: var(--text-faint);
+      border-bottom-color: var(--text-faint);
     }
   </style>
 </head>
@@ -146,7 +189,8 @@
       <div id="call-button"></div>
       <div class="owner-info" id="contact"></div>
       <div id="allergy"></div>
-      <img src="snoutley.svg" alt="Snoutley logo" class="logo">
+      <img src="green_snoutley.svg" alt="Snoutley logo" class="logo logo-light">
+      <img src="snoutley_inverted_green.svg" alt="Snoutley logo" class="logo logo-dark">
       <div class="powered-by">powered by <a href="https://snoutley.fi" target="_blank">Snoutley</a></div>
     </div>
   </div>
