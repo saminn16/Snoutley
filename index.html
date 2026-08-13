@@ -6,271 +6,370 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#fefcf9" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#202124" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#14201b" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Frank+Ruhl+Libre:wght@500;700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #fefcf9;
-      --glow: #fefcf9;
+      --panel-bg: #213731;
+      --panel-text: #fefcf9;
+      --panel-text-muted: rgba(254, 252, 249, 0.68);
       --text-strong: #213731;
-      --text-muted: rgba(33, 55, 49, 0.65);
-      --text-faint: rgba(33, 55, 49, 0.45);
-      --text-faintest: rgba(33, 55, 49, 0.35);
-      --button-bg: #ee8b00;
-      --button-bg-hover: #d17c00;
-      --button-text: #fefcf9;
-      --link-underline: rgba(33, 55, 49, 0.25);
-      --pattern-opacity: 0.07;
+      --text-muted: rgba(33, 55, 49, 0.68);
+      --text-faint: rgba(33, 55, 49, 0.5);
+      --accent: #ee8b00;
+      --accent-hover: #d17c00;
+      --accent-text: #213731;
+      --divider: rgba(33, 55, 49, 0.15);
+      --callout-bg: #f4ebdd;
+      --callout-border: #ee8b00;
+      --focus-ring: #213731;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #202124;
-        --glow: #202124;
+        --bg: #14201b;
+        --panel-bg: #213731;
+        --panel-text: #fefcf9;
+        --panel-text-muted: rgba(254, 252, 249, 0.68);
         --text-strong: #fefcf9;
-        --text-muted: rgba(254, 252, 249, 0.72);
-        --text-faint: rgba(254, 252, 249, 0.5);
-        --text-faintest: rgba(254, 252, 249, 0.38);
-        --button-bg: #ee8b00;
-        --button-bg-hover: #ffa020;
-        --button-text: #213731;
-        --link-underline: rgba(254, 252, 249, 0.3);
-        --pattern-opacity: 0.10;
+        --text-muted: rgba(254, 252, 249, 0.68);
+        --text-faint: rgba(254, 252, 249, 0.48);
+        --accent: #ee8b00;
+        --accent-hover: #ffa020;
+        --accent-text: #182620;
+        --divider: rgba(254, 252, 249, 0.15);
+        --callout-bg: rgba(238, 139, 0, 0.12);
+        --callout-border: #ee8b00;
+        --focus-ring: #fefcf9;
       }
     }
 
+    * { box-sizing: border-box; }
+
     html, body {
-      height: 100%;
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
+      min-height: 100%;
       background-color: var(--bg);
       color: var(--text-strong);
-      display: flex;
-      flex-direction: column;
+      font-family: 'Libre Franklin', sans-serif;
       transition: background-color 0.2s ease;
     }
+
     @font-face {
       font-family: 'SnoutleyFont';
       src: url('Snoutley-Regular.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
-    #bg-canvas {
-      position: fixed;
+
+    a { color: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 3px;
+    }
+
+    .page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ---------- Header band ---------- */
+    .hero {
+      position: relative;
+      background-color: var(--panel-bg);
+      overflow: hidden;
+      padding: 3.5rem 1.5rem 3rem;
+      text-align: center;
+    }
+
+    .hero-canvas {
+      position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 0;
-      opacity: var(--pattern-opacity);
     }
-    .container {
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--panel-text-muted);
+      margin: 0 0 0.9rem;
+    }
+
+    .dog-name {
+      font-family: 'SnoutleyFont', 'Frank Ruhl Libre', serif;
+      font-size: clamp(2.6rem, 13vw, 4.2rem);
+      line-height: 1;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--panel-text);
+      margin: 0;
+    }
+
+    .hero-title {
+      font-family: 'Frank Ruhl Libre', serif;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 6vw, 2.1rem);
+      color: var(--panel-text);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    /* ---------- Content ---------- */
+    .content {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      text-align: center;
-      padding: 2rem 1rem;
-      max-width: 600px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
+      padding: 2.2rem 1.5rem 2.5rem;
     }
-    .content {
+
+    .content-inner {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .lost-message {
+      font-size: 1rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin: 0 0 2rem;
+      line-height: 1.5;
+    }
+
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: var(--divider);
+      border: none;
+      margin: 0 0 1.6rem;
+    }
+
+    .row {
+      margin-bottom: 1.6rem;
+    }
+
+    .row-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin: 0 0 0.35rem;
+    }
+
+    .row-value {
+      font-family: 'Frank Ruhl Libre', serif;
+      font-weight: 500;
+      font-size: 1.5rem;
+      color: var(--text-strong);
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .callout {
+      background: var(--callout-bg);
+      border-left: 3px solid var(--callout-border);
+      padding: 0.9rem 1.1rem;
+      border-radius: 4px;
+    }
+
+    .callout .row-label { color: var(--text-muted); }
+
+    /* ---------- Button ---------- */
+    .call-button {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: auto;
-      padding-bottom: 4vh;
-    }
-    .greeting {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      margin-bottom: 0.2rem;
-      text-shadow: 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow);
-    }
-    .pet-name {
-      font-family: 'SnoutleyFont', sans-serif;
-      font-size: 3.8rem;
-      font-weight: normal;
-      letter-spacing: 1px;
-      margin: 0.4rem 0 0.8rem;
-      text-transform: uppercase;
-      color: var(--text-strong);
-      text-shadow: 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow);
-    }
-    .lost-message {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      margin-bottom: 2.5rem;
-      text-shadow: 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow);
-    }
-    .button {
-      padding: 1.1rem 2.2rem;
-      font-size: 1.35rem;
-      font-weight: bold;
-      color: var(--button-text);
-      background-color: var(--button-bg);
-      border: none;
-      border-radius: 10px;
+      justify-content: center;
+      gap: 0.3rem;
+      width: 100%;
+      padding: 1.05rem 1rem;
+      margin-top: 0.6rem;
+      background-color: var(--accent);
+      color: var(--accent-text);
       text-decoration: none;
-      transition: background-color 0.3s;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.2rem;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
     }
-    .button:hover {
-      background-color: var(--button-bg-hover);
-    }
-    .button-number {
+
+    .call-button:hover { background-color: var(--accent-hover); }
+
+    .call-button-label {
+      font-family: 'Archivo Black', sans-serif;
       font-size: 1rem;
-      font-weight: normal;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .call-button-number {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
       opacity: 0.85;
     }
-    .owner-info {
-      margin-bottom: 1.8rem;
+
+    /* ---------- Footer ---------- */
+    .footer {
+      text-align: center;
+      padding: 0 1.5rem 2rem;
     }
-    .info {
-      font-size: 1.4rem;
-      font-weight: 600;
-      margin: 0.2rem 0;
-      color: var(--text-strong);
-      text-shadow: 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow);
-    }
-    .section-title {
-      font-size: 0.85rem;
-      font-weight: 400;
-      margin-top: 2rem;
-      margin-bottom: 0.3rem;
-      color: var(--text-faint);
-      letter-spacing: 0.03em;
-      text-shadow: 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow);
-    }
-    .allergy-info {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: var(--text-strong);
-      text-shadow: 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow);
-    }
+
     .logo {
-      max-width: 100px;
-      margin-top: 2.5rem;
-      margin-bottom: 0.8rem;
+      max-width: 84px;
+      margin-bottom: 0.7rem;
     }
-    .logo-dark {
-      display: none;
-    }
+
+    .logo-dark { display: none; }
     @media (prefers-color-scheme: dark) {
-      .logo-light {
-        display: none;
-      }
-      .logo-dark {
-        display: block;
-      }
+      .logo-light { display: none; }
+      .logo-dark { display: block; margin: 0 auto 0.7rem; }
     }
+
     .powered-by {
-      font-size: 0.75rem;
-      color: var(--text-faintest);
-      margin-bottom: 0;
-      text-shadow: 0 0 10px var(--glow), 0 0 10px var(--glow), 0 0 10px var(--glow);
-    }
-    .powered-by a {
-      color: var(--text-faintest);
-      text-decoration: none;
-      border-bottom: 1px solid var(--link-underline);
-    }
-    .powered-by a:hover {
+      font-size: 0.72rem;
       color: var(--text-faint);
-      border-bottom-color: var(--text-faint);
+      margin: 0;
+    }
+
+    .powered-by a {
+      text-decoration: none;
+      border-bottom: 1px solid var(--divider);
+    }
+    .powered-by a:hover { border-bottom-color: var(--text-faint); }
+
+    /* ---------- Error / not-found state ---------- */
+    .error-text {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <canvas id="bg-canvas"></canvas>
-  <div class="container">
+  <div class="page">
+    <div class="hero">
+      <canvas class="hero-canvas" id="bg-canvas"></canvas>
+      <div class="hero-inner" id="hero-inner"></div>
+    </div>
     <div class="content">
-      <div id="output"></div>
-      <div class="owner-info" id="contact"></div>
-      <div id="call-button"></div>
-      <div id="allergy"></div>
+      <div class="content-inner">
+        <div id="lost-message"></div>
+        <hr class="divider" id="divider" style="display:none;">
+        <div id="contact-row"></div>
+        <div id="allergy-row"></div>
+        <div id="call-button"></div>
+      </div>
+    </div>
+    <div class="footer">
       <img src="green_snoutley.svg" alt="Snoutley logo" class="logo logo-light">
       <img src="snoutley_inverted_green.svg" alt="Snoutley logo" class="logo logo-dark">
-      <div class="powered-by">powered by <a href="https://snoutley.fi" target="_blank">Snoutley</a></div>
+      <p class="powered-by">powered by <a href="https://snoutley.fi" target="_blank">Snoutley</a></p>
     </div>
   </div>
+
   <script>
     const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
 
-    const output = document.getElementById("output");
+    const heroInner = document.getElementById("hero-inner");
+    const lostMessageEl = document.getElementById("lost-message");
+    const dividerEl = document.getElementById("divider");
+    const contactRow = document.getElementById("contact-row");
+    const allergyRow = document.getElementById("allergy-row");
     const callButton = document.getElementById("call-button");
-    const contact = document.getElementById("contact");
-    const allergy = document.getElementById("allergy");
+
     const lang = navigator.language.startsWith("ru") ? "ru" :
                  navigator.language.startsWith("uk") ? "uk" :
                  navigator.language.startsWith("sv") ? "sv" :
                  navigator.language.startsWith("fi") ? "fi" : "en";
     const raw = location.hash.substring(1).replace(/\+/g, ' ');
     const data = decodeURIComponent(raw).split("|");
+
     if (data.length >= 4) {
       const [name, phone, dog, allergyVal] = data;
       const translations = {
         fi: {
-          greeting: "Hei! Nimeni on:",
+          eyebrow: "Löytynyt koira",
           lostMessage: "Olen eksynyt, ole hyvä ja ota yhteyttä omistajaani.",
-          owner: `Omistaja: ${capitalize(name)}`,
+          ownerLabel: "Omistaja",
+          allergyLabel: "Tärkeää tietoa",
           button: "Soita omistajalle",
-          infoLabel: "Tärkeää tietoa",
         },
         sv: {
-          greeting: "Hej! Mitt namn är:",
+          eyebrow: "Hittad hund",
           lostMessage: "Jag är vilse, kontakta gärna min ägare.",
-          owner: `Ägare: ${capitalize(name)}`,
+          ownerLabel: "Ägare",
+          allergyLabel: "Viktig information",
           button: "Ring ägaren",
-          infoLabel: "Viktig information",
         },
         ru: {
-          greeting: "Привет! Меня зовут:",
+          eyebrow: "Найдена собака",
           lostMessage: "Я потерялся, пожалуйста, свяжитесь с моим владельцем.",
-          owner: `Владелец: ${capitalize(name)}`,
+          ownerLabel: "Владелец",
+          allergyLabel: "Важная информация",
           button: "Позвонить владельцу",
-          infoLabel: "Важная информация",
         },
         uk: {
-          greeting: "Привіт! Мене звати:",
+          eyebrow: "Знайдено собаку",
           lostMessage: "Я загубився, будь ласка, зв'яжіться з моїм власником.",
-          owner: `Власник: ${capitalize(name)}`,
+          ownerLabel: "Власник",
+          allergyLabel: "Важлива інформація",
           button: "Зателефонувати власнику",
-          infoLabel: "Важлива інформація",
         },
         en: {
-          greeting: "Hi! My name is:",
+          eyebrow: "Found dog",
           lostMessage: "I'm lost, please contact my owner.",
-          owner: `Owner: ${capitalize(name)}`,
+          ownerLabel: "Owner",
+          allergyLabel: "Important info",
           button: "Call owner",
-          infoLabel: "Important info",
         }
       };
       const t = translations[lang];
-      output.innerHTML = `
-        <div class="greeting">${t.greeting}</div>
-        <div class="pet-name">${dog}</div>
-        <div class="lost-message">${t.lostMessage}</div>
+
+      heroInner.innerHTML = `
+        <p class="eyebrow">${t.eyebrow}</p>
+        <p class="dog-name">${dog}</p>
       `;
+      lostMessageEl.innerHTML = `<p class="lost-message">${t.lostMessage}</p>`;
+      dividerEl.style.display = "block";
+      contactRow.innerHTML = `
+        <div class="row">
+          <p class="row-label">${t.ownerLabel}</p>
+          <p class="row-value">${capitalize(name)}</p>
+        </div>`;
+      allergyRow.innerHTML = `
+        <div class="row callout">
+          <p class="row-label">${t.allergyLabel}</p>
+          <p class="row-value">${allergyVal}</p>
+        </div>`;
       callButton.innerHTML = `
-        <a class="button" href="tel:${phone}">
-          <span>${t.button}</span>
-          <span class="button-number">${phone}</span>
+        <a class="call-button" href="tel:${phone}">
+          <span class="call-button-label">${t.button}</span>
+          <span class="call-button-number">${phone}</span>
         </a>`;
-      contact.innerHTML = `
-        <div class="info">${t.owner}</div>
-      `;
-      allergy.innerHTML = `
-        <div class="section-title">${t.infoLabel}</div>
-        <div class="allergy-info">${allergyVal}</div>
-      `;
     } else {
-      output.innerHTML = `<p>Virhe: tietojen lukeminen epäonnistui.</p>`;
+      heroInner.innerHTML = `
+        <p class="eyebrow">Snoutley</p>
+        <p class="hero-title">Virhe: tietojen lukeminen epäonnistui.</p>
+      `;
     }
 
     // Seeded random — always produces the same pattern
@@ -281,33 +380,34 @@
         return (s - 1) / 2147483646;
       };
     }
-    const rand = seededRandom(42);
 
-    // Background pattern
+    // Background pattern, confined to the hero band only.
+    // The mark's dark-green fill blends into the panel background,
+    // leaving only its white detail lines visible — no color filtering
+    // needed since the panel is always dark green in both themes.
+    const hero = document.querySelector('.hero');
     const canvas = document.getElementById("bg-canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
     img.src = "favicon.svg";
-    img.onload = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const iconSize = 36;
-      const spacing = 90;
+
+    function drawPattern() {
+      const rand = seededRandom(42);
+      const rect = hero.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = 0.22;
+
+      const iconSize = 30;
+      const spacing = 62;
       const cols = Math.ceil(canvas.width / spacing) + 2;
       const rows = Math.ceil(canvas.height / spacing) + 2;
 
-      // Canvas 2D context supports the same filter syntax as CSS.
-      // In dark mode the icon (a dark brand green) would barely show
-      // against the dark background, so we scale its brightness up —
-      // this keeps the green hue rather than shifting toward white,
-      // unlike invert() would.
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      ctx.filter = isDark ? 'brightness(1.9) saturate(1.15)' : 'none';
-
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
-          const x = col * spacing + (rand() * 20 - 10);
-          const y = row * spacing + (col % 2 === 0 ? 0 : spacing / 2) + (rand() * 20 - 10);
+          const x = col * spacing + (rand() * 16 - 8);
+          const y = row * spacing + (col % 2 === 0 ? 0 : spacing / 2) + (rand() * 16 - 8);
           const angle = rand() * Math.PI * 2;
           ctx.save();
           ctx.translate(x, y);
@@ -316,7 +416,10 @@
           ctx.restore();
         }
       }
-    };
+    }
+
+    img.onload = drawPattern;
+    window.addEventListener('resize', () => { if (img.complete) drawPattern(); });
   </script>
 </body>
 </html>
