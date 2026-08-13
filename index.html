@@ -36,13 +36,6 @@
       font-family: 'Libre Franklin', sans-serif;
     }
 
-    @font-face {
-      font-family: 'SnoutleyFont';
-      src: url('Snoutley-Regular.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
     a { color: inherit; }
 
     :focus-visible {
@@ -89,14 +82,14 @@
       padding: 1.8rem 1.25rem;
       background-color: var(--badge-bg);
       border-radius: 8px;
-      margin-bottom: 1.8rem;
+      margin-bottom: 2.6rem;
     }
 
     .dog-name {
-      font-family: 'SnoutleyFont', 'Frank Ruhl Libre', serif;
-      font-size: clamp(2.2rem, 11vw, 3.1rem);
-      line-height: 1;
-      letter-spacing: 0.5px;
+      font-family: 'Archivo Black', sans-serif;
+      font-size: clamp(1.4rem, 6vw, 1.7rem);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
       color: var(--badge-text);
       margin: 0;
@@ -340,8 +333,8 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.globalAlpha = 0.09;
 
-      const iconSize = 34;
-      const spacing = 78;
+      const iconSize = 20;
+      const spacing = 48;
       const cols = Math.ceil(canvas.width / spacing) + 2;
       const rows = Math.ceil(canvas.height / spacing) + 2;
 
