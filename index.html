@@ -83,7 +83,7 @@
       text-align: center;
       padding: 1.8rem 1.25rem;
       background-color: var(--badge-bg);
-      border: 1px solid var(--badge-border);
+      box-shadow: 0 1px 4px rgba(33, 55, 49, 0.08);
       border-radius: 8px;
       margin-bottom: 2.6rem;
       text-decoration: none;
@@ -97,6 +97,7 @@
       text-transform: uppercase;
       color: var(--text-strong);
       margin: 0;
+      overflow-wrap: break-word;
     }
 
     .lost-message {
@@ -195,7 +196,7 @@
 
     .callout {
       background: var(--callout-bg);
-      border: 1px solid var(--badge-border);
+      box-shadow: 0 1px 4px rgba(33, 55, 49, 0.08);
       border-left: 3px solid var(--callout-border);
       padding: 0.9rem 1.1rem;
       border-radius: 4px;
@@ -303,7 +304,6 @@
           <span class="call-button-number">${phone}</span>
         </a>`;
       allergyRow.innerHTML = `
-        <hr class="divider">
         <div class="row callout">
           <p class="row-label">${t.allergyLabel}</p>
           <p class="row-value">${allergyVal}</p>
