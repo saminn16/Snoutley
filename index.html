@@ -16,10 +16,11 @@
       --text-strong: #213731;
       --text-muted: rgba(33, 55, 49, 0.68);
       --text-faint: rgba(33, 55, 49, 0.5);
-      --accent: #ee8b00;
-      --accent-hover: #d17c00;
-      --badge-bg: #213731;
-      --badge-text: #fefcf9;
+      --cta-bg: #213731;
+      --cta-hover: #2c4940;
+      --cta-text: #fefcf9;
+      --badge-bg: #f4ebdd;
+      --badge-border: rgba(33, 55, 49, 0.12);
       --divider: rgba(33, 55, 49, 0.15);
       --callout-bg: #f4ebdd;
       --callout-border: #ee8b00;
@@ -82,6 +83,7 @@
       text-align: center;
       padding: 1.8rem 1.25rem;
       background-color: var(--badge-bg);
+      border: 1px solid var(--badge-border);
       border-radius: 8px;
       margin-bottom: 2.6rem;
       text-decoration: none;
@@ -93,14 +95,14 @@
       line-height: 1.15;
       letter-spacing: 0.02em;
       text-transform: uppercase;
-      color: var(--badge-text);
+      color: var(--text-strong);
       margin: 0;
     }
 
     .lost-message {
       font-family: 'Libre Franklin', sans-serif;
       font-size: 0.98rem;
-      color: rgba(254, 252, 249, 0.75);
+      color: var(--text-muted);
       text-align: center;
       margin: 0.7rem 0 0;
       line-height: 1.5;
@@ -125,29 +127,29 @@
       gap: 0.4rem;
       width: 100%;
       padding: 1.6rem 1rem;
-      background-color: var(--accent);
+      background-color: var(--cta-bg);
       text-decoration: none;
       border-radius: 8px;
-      box-shadow: 0 6px 16px rgba(238, 139, 0, 0.28);
+      box-shadow: 0 6px 16px rgba(33, 55, 49, 0.22);
       transition: background-color 0.2s ease;
     }
 
-    .call-button:hover { background-color: var(--accent-hover); }
+    .call-button:hover { background-color: var(--cta-hover); }
 
     .call-button-label {
       font-family: 'Archivo Black', sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       letter-spacing: 0.02em;
       text-transform: uppercase;
-      color: #ffffff;
+      color: var(--cta-text);
     }
 
     .call-button-number {
       font-family: 'Libre Franklin', sans-serif;
       font-size: 1.02rem;
       font-weight: 500;
-      color: #ffffff;
-      opacity: 0.92;
+      color: var(--cta-text);
+      opacity: 0.85;
     }
 
     /* ---------- Rows ---------- */
@@ -224,7 +226,6 @@
       <div class="content-inner">
         <div id="name-block"></div>
         <div id="call-button"></div>
-        <div id="contact-row"></div>
         <div id="allergy-row"></div>
       </div>
     </div>
@@ -238,7 +239,6 @@
     const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
 
     const nameBlock = document.getElementById("name-block");
-    const contactRow = document.getElementById("contact-row");
     const allergyRow = document.getElementById("allergy-row");
     const callButton = document.getElementById("call-button");
 
@@ -254,33 +254,28 @@
       const translations = {
         fi: {
           lostMessage: "Olen eksynyt, ole hyvä ja ota yhteyttä omistajaani.",
-          ownerLabel: "Omistaja",
           allergyLabel: "Tärkeää tietoa",
-          button: "Soita omistajalle",
+          buttonPrefix: "Soita omistajalle: ",
         },
         sv: {
           lostMessage: "Jag är vilse, kontakta gärna min ägare.",
-          ownerLabel: "Ägare",
           allergyLabel: "Viktig information",
-          button: "Ring ägaren",
+          buttonPrefix: "Ring ägaren: ",
         },
         ru: {
           lostMessage: "Я потерялся, пожалуйста, свяжитесь с моим владельцем.",
-          ownerLabel: "Владелец",
           allergyLabel: "Важная информация",
-          button: "Позвонить владельцу",
+          buttonPrefix: "Позвонить владельцу: ",
         },
         uk: {
           lostMessage: "Я загубився, будь ласка, зв'яжіться з моїм власником.",
-          ownerLabel: "Власник",
           allergyLabel: "Важлива інформація",
-          button: "Зателефонувати власнику",
+          buttonPrefix: "Зателефонувати власнику: ",
         },
         en: {
           lostMessage: "I'm lost, please contact my owner.",
-          ownerLabel: "Owner",
           allergyLabel: "Important info",
-          button: "Call owner",
+          buttonPrefix: "Call owner: ",
         }
       };
       const t = translations[lang];
@@ -293,14 +288,9 @@
       `;
       callButton.innerHTML = `
         <a class="call-button" href="tel:${phone}">
-          <span class="call-button-label">${t.button}</span>
+          <span class="call-button-label">${t.buttonPrefix}${capitalize(name)}</span>
           <span class="call-button-number">${phone}</span>
         </a>`;
-      contactRow.innerHTML = `
-        <div class="row">
-          <p class="row-label">${t.ownerLabel}</p>
-          <p class="row-value">${capitalize(name)}</p>
-        </div>`;
       allergyRow.innerHTML = `
         <hr class="divider">
         <div class="row callout">
