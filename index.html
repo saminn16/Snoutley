@@ -9,7 +9,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Frank+Ruhl+Libre:wght@500;700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #fefcf9;
@@ -30,8 +30,7 @@
 
     html, body {
       margin: 0;
-      height: 100%;
-      overflow: hidden;
+      min-height: 100%;
       background-color: var(--bg);
       color: var(--text-strong);
       font-family: 'Libre Franklin', sans-serif;
@@ -58,8 +57,8 @@
       z-index: 1;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      min-height: 100dvh;
     }
 
     .content {
@@ -108,9 +107,9 @@
     }
 
     .hero-title {
-      font-family: 'Frank Ruhl Libre', serif;
-      font-weight: 500;
-      font-size: clamp(1.4rem, 6vw, 1.9rem);
+      font-family: 'Libre Franklin', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.3rem, 5.5vw, 1.7rem);
       color: var(--text-strong);
       text-align: center;
       margin: 0;
@@ -167,9 +166,9 @@
     }
 
     .row-value {
-      font-family: 'Frank Ruhl Libre', serif;
-      font-weight: 500;
-      font-size: 1.35rem;
+      font-family: 'Libre Franklin', sans-serif;
+      font-weight: 600;
+      font-size: 1.3rem;
       color: var(--text-strong);
       margin: 0;
       line-height: 1.3;
