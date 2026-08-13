@@ -5,47 +5,24 @@
   <title>Snoutley – Löydetty koira</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#fefcf9" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#14201b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#213731">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Frank+Ruhl+Libre:wght@500;700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #fefcf9;
-      --panel-bg: #213731;
-      --panel-text: #fefcf9;
-      --panel-text-muted: rgba(254, 252, 249, 0.68);
-      --text-strong: #213731;
-      --text-muted: rgba(33, 55, 49, 0.68);
-      --text-faint: rgba(33, 55, 49, 0.5);
+      --bg: #213731;
+      --text-strong: #fefcf9;
+      --text-muted: rgba(254, 252, 249, 0.72);
+      --text-faint: rgba(254, 252, 249, 0.5);
       --accent: #ee8b00;
-      --accent-hover: #d17c00;
-      --accent-text: #213731;
-      --divider: rgba(33, 55, 49, 0.15);
-      --callout-bg: #f4ebdd;
+      --accent-hover: #ffa020;
+      --accent-text: #fefcf9;
+      --divider: rgba(254, 252, 249, 0.16);
+      --callout-bg: rgba(254, 252, 249, 0.08);
       --callout-border: #ee8b00;
-      --focus-ring: #213731;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #14201b;
-        --panel-bg: #213731;
-        --panel-text: #fefcf9;
-        --panel-text-muted: rgba(254, 252, 249, 0.68);
-        --text-strong: #fefcf9;
-        --text-muted: rgba(254, 252, 249, 0.68);
-        --text-faint: rgba(254, 252, 249, 0.48);
-        --accent: #ee8b00;
-        --accent-hover: #ffa020;
-        --accent-text: #182620;
-        --divider: rgba(254, 252, 249, 0.15);
-        --callout-bg: rgba(238, 139, 0, 0.12);
-        --callout-border: #ee8b00;
-        --focus-ring: #fefcf9;
-      }
+      --focus-ring: #fefcf9;
     }
 
     * { box-sizing: border-box; }
@@ -56,7 +33,6 @@
       background-color: var(--bg);
       color: var(--text-strong);
       font-family: 'Libre Franklin', sans-serif;
-      transition: background-color 0.2s ease;
     }
 
     @font-face {
@@ -73,63 +49,53 @@
       outline-offset: 3px;
     }
 
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .page {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    /* ---------- Header band ---------- */
-    .hero {
-      position: relative;
-      background-color: var(--panel-bg);
-      overflow: hidden;
-      padding: 3.5rem 1.5rem 3rem;
+    /* ---------- Name block ---------- */
+    .name-block {
       text-align: center;
-    }
-
-    .hero-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 460px;
-      margin: 0 auto;
-    }
-
-    .eyebrow {
-      font-family: 'Libre Franklin', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--panel-text-muted);
-      margin: 0 0 0.9rem;
+      padding: 4rem 1.5rem 2rem;
     }
 
     .dog-name {
       font-family: 'SnoutleyFont', 'Frank Ruhl Libre', serif;
-      font-size: clamp(2.6rem, 13vw, 4.2rem);
-      line-height: 1;
+      font-size: clamp(3.4rem, 18vw, 6rem);
+      line-height: 0.95;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      color: var(--panel-text);
+      color: var(--text-strong);
+      margin: 0 0 0.9rem;
+    }
+
+    .lost-message {
+      font-size: 1.05rem;
+      color: var(--text-muted);
       margin: 0;
+      line-height: 1.5;
     }
 
     .hero-title {
       font-family: 'Frank Ruhl Libre', serif;
       font-weight: 500;
-      font-size: clamp(1.6rem, 6vw, 2.1rem);
-      color: var(--panel-text);
+      font-size: clamp(1.5rem, 6vw, 2rem);
+      color: var(--text-strong);
       margin: 0;
-      line-height: 1.25;
+      line-height: 1.3;
     }
 
     /* ---------- Content ---------- */
@@ -138,7 +104,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2.2rem 1.5rem 2.5rem;
+      padding: 0 1.5rem 2.5rem;
     }
 
     .content-inner {
@@ -146,24 +112,44 @@
       max-width: 420px;
     }
 
-    .lost-message {
-      font-size: 1rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin: 0 0 2rem;
-      line-height: 1.5;
-    }
-
-    .divider {
-      height: 1px;
+    /* ---------- Button ---------- */
+    .call-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
       width: 100%;
-      background: var(--divider);
-      border: none;
-      margin: 0 0 1.6rem;
+      padding: 1.15rem 1rem;
+      background-color: var(--accent);
+      color: var(--accent-text);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
     }
 
+    .call-button:hover { background-color: var(--accent-hover); }
+
+    .call-button-label {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #fefcf9;
+    }
+
+    .call-button-number {
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #fefcf9;
+      opacity: 0.9;
+    }
+
+    /* ---------- Rows ---------- */
     .row {
-      margin-bottom: 1.6rem;
+      text-align: center;
+      margin-top: 1.4rem;
     }
 
     .row-label {
@@ -178,10 +164,18 @@
     .row-value {
       font-family: 'Frank Ruhl Libre', serif;
       font-weight: 500;
-      font-size: 1.5rem;
+      font-size: 1.35rem;
       color: var(--text-strong);
       margin: 0;
       line-height: 1.3;
+    }
+
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: var(--divider);
+      border: none;
+      margin: 1.8rem 0 0;
     }
 
     .callout {
@@ -189,58 +183,21 @@
       border-left: 3px solid var(--callout-border);
       padding: 0.9rem 1.1rem;
       border-radius: 4px;
+      text-align: left;
+      margin-top: 1.8rem;
     }
 
     .callout .row-label { color: var(--text-muted); }
 
-    /* ---------- Button ---------- */
-    .call-button {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3rem;
-      width: 100%;
-      padding: 1.05rem 1rem;
-      margin-top: 0.6rem;
-      background-color: var(--accent);
-      color: var(--accent-text);
-      text-decoration: none;
-      border-radius: 8px;
-      transition: background-color 0.2s ease;
-    }
-
-    .call-button:hover { background-color: var(--accent-hover); }
-
-    .call-button-label {
-      font-family: 'Archivo Black', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-    }
-
-    .call-button-number {
-      font-family: 'Libre Franklin', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 500;
-      opacity: 0.85;
-    }
-
     /* ---------- Footer ---------- */
     .footer {
       text-align: center;
-      padding: 0 1.5rem 2rem;
+      padding: 2rem 1.5rem 2rem;
     }
 
     .logo {
       max-width: 84px;
       margin-bottom: 0.7rem;
-    }
-
-    .logo-dark { display: none; }
-    @media (prefers-color-scheme: dark) {
-      .logo-light { display: none; }
-      .logo-dark { display: block; margin: 0 auto 0.7rem; }
     }
 
     .powered-by {
@@ -254,34 +211,21 @@
       border-bottom: 1px solid var(--divider);
     }
     .powered-by a:hover { border-bottom-color: var(--text-faint); }
-
-    /* ---------- Error / not-found state ---------- */
-    .error-text {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 1rem;
-      line-height: 1.6;
-    }
   </style>
 </head>
 <body>
+  <canvas class="bg-canvas" id="bg-canvas"></canvas>
   <div class="page">
-    <div class="hero">
-      <canvas class="hero-canvas" id="bg-canvas"></canvas>
-      <div class="hero-inner" id="hero-inner"></div>
-    </div>
+    <div class="name-block" id="name-block"></div>
     <div class="content">
       <div class="content-inner">
-        <div id="lost-message"></div>
-        <hr class="divider" id="divider" style="display:none;">
+        <div id="call-button"></div>
         <div id="contact-row"></div>
         <div id="allergy-row"></div>
-        <div id="call-button"></div>
       </div>
     </div>
     <div class="footer">
-      <img src="green_snoutley.svg" alt="Snoutley logo" class="logo logo-light">
-      <img src="snoutley_inverted_green.svg" alt="Snoutley logo" class="logo logo-dark">
+      <img src="snoutley_inverted_green.svg" alt="Snoutley logo" class="logo">
       <p class="powered-by">powered by <a href="https://snoutley.fi" target="_blank">Snoutley</a></p>
     </div>
   </div>
@@ -289,9 +233,7 @@
   <script>
     const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
 
-    const heroInner = document.getElementById("hero-inner");
-    const lostMessageEl = document.getElementById("lost-message");
-    const dividerEl = document.getElementById("divider");
+    const nameBlock = document.getElementById("name-block");
     const contactRow = document.getElementById("contact-row");
     const allergyRow = document.getElementById("allergy-row");
     const callButton = document.getElementById("call-button");
@@ -307,35 +249,30 @@
       const [name, phone, dog, allergyVal] = data;
       const translations = {
         fi: {
-          eyebrow: "Löytynyt koira",
           lostMessage: "Olen eksynyt, ole hyvä ja ota yhteyttä omistajaani.",
           ownerLabel: "Omistaja",
           allergyLabel: "Tärkeää tietoa",
           button: "Soita omistajalle",
         },
         sv: {
-          eyebrow: "Hittad hund",
           lostMessage: "Jag är vilse, kontakta gärna min ägare.",
           ownerLabel: "Ägare",
           allergyLabel: "Viktig information",
           button: "Ring ägaren",
         },
         ru: {
-          eyebrow: "Найдена собака",
           lostMessage: "Я потерялся, пожалуйста, свяжитесь с моим владельцем.",
           ownerLabel: "Владелец",
           allergyLabel: "Важная информация",
           button: "Позвонить владельцу",
         },
         uk: {
-          eyebrow: "Знайдено собаку",
           lostMessage: "Я загубився, будь ласка, зв'яжіться з моїм власником.",
           ownerLabel: "Власник",
           allergyLabel: "Важлива інформація",
           button: "Зателефонувати власнику",
         },
         en: {
-          eyebrow: "Found dog",
           lostMessage: "I'm lost, please contact my owner.",
           ownerLabel: "Owner",
           allergyLabel: "Important info",
@@ -344,32 +281,28 @@
       };
       const t = translations[lang];
 
-      heroInner.innerHTML = `
-        <p class="eyebrow">${t.eyebrow}</p>
+      nameBlock.innerHTML = `
         <p class="dog-name">${dog}</p>
+        <p class="lost-message">${t.lostMessage}</p>
       `;
-      lostMessageEl.innerHTML = `<p class="lost-message">${t.lostMessage}</p>`;
-      dividerEl.style.display = "block";
+      callButton.innerHTML = `
+        <a class="call-button" href="tel:${phone}">
+          <span class="call-button-label">${t.button}</span>
+          <span class="call-button-number">${phone}</span>
+        </a>`;
       contactRow.innerHTML = `
         <div class="row">
           <p class="row-label">${t.ownerLabel}</p>
           <p class="row-value">${capitalize(name)}</p>
         </div>`;
       allergyRow.innerHTML = `
+        <hr class="divider">
         <div class="row callout">
           <p class="row-label">${t.allergyLabel}</p>
           <p class="row-value">${allergyVal}</p>
         </div>`;
-      callButton.innerHTML = `
-        <a class="call-button" href="tel:${phone}">
-          <span class="call-button-label">${t.button}</span>
-          <span class="call-button-number">${phone}</span>
-        </a>`;
     } else {
-      heroInner.innerHTML = `
-        <p class="eyebrow">Snoutley</p>
-        <p class="hero-title">Virhe: tietojen lukeminen epäonnistui.</p>
-      `;
+      nameBlock.innerHTML = `<p class="hero-title">Virhe: tietojen lukeminen epäonnistui.</p>`;
     }
 
     // Seeded random — always produces the same pattern
@@ -381,11 +314,10 @@
       };
     }
 
-    // Background pattern, confined to the hero band only.
-    // The mark's dark-green fill blends into the panel background,
-    // leaving only its white detail lines visible — no color filtering
-    // needed since the panel is always dark green in both themes.
-    const hero = document.querySelector('.hero');
+    // Full-page background pattern. The mark's dark-green fill blends
+    // into the page background, leaving only its white detail lines
+    // visible — a consistent look since the background is always
+    // the brand dark green now.
     const canvas = document.getElementById("bg-canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
@@ -393,21 +325,20 @@
 
     function drawPattern() {
       const rand = seededRandom(42);
-      const rect = hero.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.globalAlpha = 0.22;
+      ctx.globalAlpha = 0.16;
 
-      const iconSize = 30;
-      const spacing = 62;
+      const iconSize = 34;
+      const spacing = 78;
       const cols = Math.ceil(canvas.width / spacing) + 2;
       const rows = Math.ceil(canvas.height / spacing) + 2;
 
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
-          const x = col * spacing + (rand() * 16 - 8);
-          const y = row * spacing + (col % 2 === 0 ? 0 : spacing / 2) + (rand() * 16 - 8);
+          const x = col * spacing + (rand() * 18 - 9);
+          const y = row * spacing + (col % 2 === 0 ? 0 : spacing / 2) + (rand() * 18 - 9);
           const angle = rand() * Math.PI * 2;
           ctx.save();
           ctx.translate(x, y);
@@ -419,7 +350,7 @@
     }
 
     img.onload = drawPattern;
-    window.addEventListener('resize', () => { if (img.complete) drawPattern(); });
+    window.addEventListener('resize', drawPattern);
   </script>
 </body>
 </html>
