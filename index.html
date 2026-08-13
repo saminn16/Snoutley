@@ -5,24 +5,25 @@
   <title>Snoutley – Löydetty koira</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#213731">
+  <meta name="theme-color" content="#fefcf9">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Frank+Ruhl+Libre:wght@500;700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #213731;
-      --text-strong: #fefcf9;
-      --text-muted: rgba(254, 252, 249, 0.72);
-      --text-faint: rgba(254, 252, 249, 0.5);
+      --bg: #fefcf9;
+      --text-strong: #213731;
+      --text-muted: rgba(33, 55, 49, 0.68);
+      --text-faint: rgba(33, 55, 49, 0.5);
       --accent: #ee8b00;
-      --accent-hover: #ffa020;
-      --accent-text: #fefcf9;
-      --divider: rgba(254, 252, 249, 0.16);
-      --callout-bg: rgba(254, 252, 249, 0.08);
+      --accent-hover: #d17c00;
+      --badge-bg: #213731;
+      --badge-text: #fefcf9;
+      --divider: rgba(33, 55, 49, 0.15);
+      --callout-bg: #f4ebdd;
       --callout-border: #ee8b00;
-      --focus-ring: #fefcf9;
+      --focus-ring: #213731;
     }
 
     * { box-sizing: border-box; }
@@ -66,50 +67,56 @@
       min-height: 100vh;
     }
 
-    /* ---------- Name block ---------- */
-    .name-block {
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .content-inner {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* ---------- Dog name badge ---------- */
+    .dog-name-badge {
+      display: block;
+      width: 100%;
       text-align: center;
-      padding: 4rem 1.5rem 2rem;
+      padding: 1.15rem 1rem;
+      background-color: var(--badge-bg);
+      border-radius: 8px;
     }
 
     .dog-name {
       font-family: 'SnoutleyFont', 'Frank Ruhl Libre', serif;
-      font-size: clamp(3.4rem, 18vw, 6rem);
-      line-height: 0.95;
+      font-size: clamp(1.8rem, 8vw, 2.4rem);
+      line-height: 1;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      color: var(--text-strong);
-      margin: 0 0 0.9rem;
+      color: var(--badge-text);
+      margin: 0;
     }
 
     .lost-message {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       color: var(--text-muted);
-      margin: 0;
+      text-align: center;
+      margin: 1.1rem 0 1.8rem;
       line-height: 1.5;
     }
 
     .hero-title {
       font-family: 'Frank Ruhl Libre', serif;
       font-weight: 500;
-      font-size: clamp(1.5rem, 6vw, 2rem);
+      font-size: clamp(1.4rem, 6vw, 1.9rem);
       color: var(--text-strong);
+      text-align: center;
       margin: 0;
       line-height: 1.3;
-    }
-
-    /* ---------- Content ---------- */
-    .content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 0 1.5rem 2.5rem;
-    }
-
-    .content-inner {
-      width: 100%;
-      max-width: 420px;
     }
 
     /* ---------- Button ---------- */
@@ -122,7 +129,6 @@
       width: 100%;
       padding: 1.15rem 1rem;
       background-color: var(--accent);
-      color: var(--accent-text);
       text-decoration: none;
       border-radius: 8px;
       transition: background-color 0.2s ease;
@@ -135,15 +141,15 @@
       font-size: 1.05rem;
       letter-spacing: 0.02em;
       text-transform: uppercase;
-      color: #fefcf9;
+      color: #ffffff;
     }
 
     .call-button-number {
       font-family: 'Libre Franklin', sans-serif;
       font-size: 0.95rem;
       font-weight: 500;
-      color: #fefcf9;
-      opacity: 0.9;
+      color: #ffffff;
+      opacity: 0.92;
     }
 
     /* ---------- Rows ---------- */
@@ -192,7 +198,7 @@
     /* ---------- Footer ---------- */
     .footer {
       text-align: center;
-      padding: 2rem 1.5rem 2rem;
+      padding: 0 1.5rem 2rem;
     }
 
     .logo {
@@ -216,16 +222,16 @@
 <body>
   <canvas class="bg-canvas" id="bg-canvas"></canvas>
   <div class="page">
-    <div class="name-block" id="name-block"></div>
     <div class="content">
       <div class="content-inner">
+        <div id="name-block"></div>
         <div id="call-button"></div>
         <div id="contact-row"></div>
         <div id="allergy-row"></div>
       </div>
     </div>
     <div class="footer">
-      <img src="snoutley_inverted_green.svg" alt="Snoutley logo" class="logo">
+      <img src="green_snoutley.svg" alt="Snoutley logo" class="logo">
       <p class="powered-by">powered by <a href="https://snoutley.fi" target="_blank">Snoutley</a></p>
     </div>
   </div>
@@ -282,7 +288,9 @@
       const t = translations[lang];
 
       nameBlock.innerHTML = `
-        <p class="dog-name">${dog}</p>
+        <div class="dog-name-badge">
+          <p class="dog-name">${dog}</p>
+        </div>
         <p class="lost-message">${t.lostMessage}</p>
       `;
       callButton.innerHTML = `
@@ -314,10 +322,9 @@
       };
     }
 
-    // Full-page background pattern. The mark's dark-green fill blends
-    // into the page background, leaving only its white detail lines
-    // visible — a consistent look since the background is always
-    // the brand dark green now.
+    // Full-page background pattern. The mark's white detail lines
+    // blend into the cream page background, leaving its dark green
+    // fill visible at low opacity across the whole page.
     const canvas = document.getElementById("bg-canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
@@ -328,7 +335,7 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.globalAlpha = 0.16;
+      ctx.globalAlpha = 0.09;
 
       const iconSize = 34;
       const spacing = 78;
