@@ -19,11 +19,10 @@
       --cta-bg: #213731;
       --cta-hover: #2c4940;
       --cta-text: #fefcf9;
-      --badge-bg: #5c7268;
-      --badge-text: #fefcf9;
-      --badge-text-muted: rgba(254, 252, 249, 0.8);
+      --badge-bg: #fefcf9;
+      --badge-border: rgba(33, 55, 49, 0.14);
       --divider: rgba(33, 55, 49, 0.15);
-      --callout-bg: #f4ebdd;
+      --callout-bg: #fefcf9;
       --callout-border: #ee8b00;
       --focus-ring: #213731;
     }
@@ -84,6 +83,7 @@
       text-align: center;
       padding: 1.8rem 1.25rem;
       background-color: var(--badge-bg);
+      border: 1px solid var(--badge-border);
       border-radius: 8px;
       margin-bottom: 2.6rem;
       text-decoration: none;
@@ -95,7 +95,7 @@
       line-height: 1.15;
       letter-spacing: 0.02em;
       text-transform: uppercase;
-      color: var(--badge-text);
+      color: var(--text-strong);
       margin: 0;
     }
 
@@ -103,7 +103,7 @@
       font-family: 'Libre Franklin', sans-serif;
       font-weight: 700;
       font-size: 0.98rem;
-      color: var(--badge-text-muted);
+      color: var(--text-muted);
       text-align: center;
       margin: 0.7rem 0 0;
       line-height: 1.5;
@@ -195,6 +195,7 @@
 
     .callout {
       background: var(--callout-bg);
+      border: 1px solid var(--badge-border);
       border-left: 3px solid var(--callout-border);
       padding: 0.9rem 1.1rem;
       border-radius: 4px;
