@@ -202,7 +202,7 @@
     .callout .row-label { color: var(--text-muted); }
     .callout .row-value { color: var(--text-black); }
 
-    .secondary-link {
+    .secondary-text {
       display: block;
       text-align: center;
       margin-top: 1rem;
@@ -210,14 +210,15 @@
       font-size: 0.85rem;
       font-weight: 500;
       color: var(--text-faint);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
     }
 
-    .secondary-link:hover {
-      color: var(--text-muted);
-      border-bottom-color: var(--text-faint);
+    .secondary-text a {
+      color: var(--text-faint);
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
+
+    .secondary-text a:hover { color: var(--text-muted); }
 
     /* ---------- Footer ---------- */
     .footer {
@@ -283,35 +284,45 @@
           lostMessage: "Olen eksynyt, ole hyvä ja ota yhteyttä omistajaani.",
           allergyLabel: "Hyvä tietää",
           buttonPrefix: "Soita omistajalle: ",
-          smsPrompt: "Etkö halua soittaa? Lähetä viesti",
+          smsPrefix: "Etkö halua soittaa? Lähetä ",
+          smsLinkWord: "viesti",
+          smsBody: `Hei! Löysin koirasi ${dog}. `,
         },
         sv: {
           greeting: "Hej! Mitt namn är:",
           lostMessage: "Jag är vilse, kontakta gärna min ägare.",
           allergyLabel: "Bra att veta",
           buttonPrefix: "Ring ägaren: ",
-          smsPrompt: "Vill du inte ringa? Skicka ett meddelande",
+          smsPrefix: "Vill du inte ringa? Skicka ett ",
+          smsLinkWord: "meddelande",
+          smsBody: `Hej! Jag har hittat din hund ${dog}. `,
         },
         ru: {
           greeting: "Привет! Меня зовут:",
           lostMessage: "Я потерялся, пожалуйста, свяжитесь с моим владельцем.",
           allergyLabel: "Полезно знать",
           buttonPrefix: "Позвонить владельцу: ",
-          smsPrompt: "Не хотите звонить? Отправьте сообщение",
+          smsPrefix: "Не хотите звонить? Отправьте ",
+          smsLinkWord: "сообщение",
+          smsBody: `Здравствуйте! Ваша собака ${dog} найдена. `,
         },
         uk: {
           greeting: "Привіт! Мене звати:",
           lostMessage: "Я загубився, будь ласка, зв'яжіться з моїм власником.",
           allergyLabel: "Корисно знати",
           buttonPrefix: "Зателефонувати власнику: ",
-          smsPrompt: "Не хочете телефонувати? Надішліть повідомлення",
+          smsPrefix: "Не хочете телефонувати? Надішліть ",
+          smsLinkWord: "повідомлення",
+          smsBody: `Вітаю! Вашого собаку ${dog} знайдено. `,
         },
         en: {
           greeting: "Hi! My name is:",
           lostMessage: "I'm lost, please contact my owner.",
           allergyLabel: "Good to know",
           buttonPrefix: "Call owner: ",
-          smsPrompt: "Don't want to call? Send a message",
+          smsPrefix: "Don't want to call? Send a ",
+          smsLinkWord: "message",
+          smsBody: `Hi! I found your dog ${dog}. `,
         }
       };
       const t = translations[lang];
@@ -329,7 +340,10 @@
           <span class="call-button-name">${capitalize(name)}</span>
           <span class="call-button-number">${phone}</span>
         </a>`;
-      smsLink.innerHTML = `<a class="secondary-link" href="sms:${phone}">${t.smsPrompt}</a>`;
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const smsSeparator = isIOS ? '&' : '?';
+      const smsHref = `sms:${phone}${smsSeparator}body=${encodeURIComponent(t.smsBody)}`;
+      smsLink.innerHTML = `<p class="secondary-text">${t.smsPrefix}<a href="${smsHref}">${t.smsLinkWord}</a></p>`;
       allergyRow.innerHTML = `
         <div class="row callout">
           <p class="row-label">${t.allergyLabel} – ${dog}</p>
