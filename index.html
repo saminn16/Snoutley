@@ -14,6 +14,7 @@
     :root {
       --bg: #fefcf9;
       --text-strong: #213731;
+      --text-black: #333333;
       --text-muted: rgba(33, 55, 49, 0.68);
       --text-faint: rgba(33, 55, 49, 0.5);
       --cta-bg: #213731;
@@ -74,6 +75,10 @@
     .content-inner {
       width: 100%;
       max-width: 420px;
+      background-color: var(--badge-bg);
+      box-shadow: 0 2px 12px rgba(33, 55, 49, 0.1);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
     }
 
     /* ---------- Dog name badge ---------- */
@@ -81,11 +86,6 @@
       display: block;
       width: 100%;
       text-align: center;
-      padding: 1.8rem 1.25rem;
-      background-color: var(--badge-bg);
-      box-shadow: 0 1px 4px rgba(33, 55, 49, 0.08);
-      border-radius: 8px;
-      margin-bottom: 3.2rem;
       text-decoration: none;
     }
 
@@ -137,7 +137,7 @@
       gap: 0.4rem;
       width: 100%;
       padding: 1.6rem 1rem;
-      margin-top: 3.4rem;
+      margin-top: 2rem;
       background-color: var(--cta-bg);
       text-decoration: none;
       border-radius: 8px;
@@ -195,16 +195,29 @@
     }
 
     .callout {
-      background: var(--callout-bg);
-      box-shadow: 0 1px 4px rgba(33, 55, 49, 0.08);
-      border-left: 3px solid var(--callout-border);
-      padding: 0.9rem 1.1rem;
-      border-radius: 4px;
-      text-align: left;
-      margin-top: 0;
+      text-align: center;
+      margin-top: 2rem;
     }
 
     .callout .row-label { color: var(--text-muted); }
+    .callout .row-value { color: var(--text-black); }
+
+    .secondary-link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      font-family: 'Libre Franklin', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-faint);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    .secondary-link:hover {
+      color: var(--text-muted);
+      border-bottom-color: var(--text-faint);
+    }
 
     /* ---------- Footer ---------- */
     .footer {
@@ -238,6 +251,7 @@
         <div id="name-block"></div>
         <div id="allergy-row"></div>
         <div id="call-button"></div>
+        <div id="sms-link"></div>
       </div>
     </div>
     <div class="footer">
@@ -252,6 +266,7 @@
     const nameBlock = document.getElementById("name-block");
     const allergyRow = document.getElementById("allergy-row");
     const callButton = document.getElementById("call-button");
+    const smsLink = document.getElementById("sms-link");
 
     const lang = navigator.language.startsWith("ru") ? "ru" :
                  navigator.language.startsWith("uk") ? "uk" :
@@ -266,32 +281,37 @@
         fi: {
           greeting: "Hei! Nimeni on:",
           lostMessage: "Olen eksynyt, ole hyvä ja ota yhteyttä omistajaani.",
-          allergyLabel: "Tärkeää tietoa",
+          allergyLabel: "Hyvä tietää",
           buttonPrefix: "Soita omistajalle: ",
+          smsPrompt: "Etkö halua soittaa? Lähetä viesti",
         },
         sv: {
           greeting: "Hej! Mitt namn är:",
           lostMessage: "Jag är vilse, kontakta gärna min ägare.",
-          allergyLabel: "Viktig information",
+          allergyLabel: "Bra att veta",
           buttonPrefix: "Ring ägaren: ",
+          smsPrompt: "Vill du inte ringa? Skicka ett meddelande",
         },
         ru: {
           greeting: "Привет! Меня зовут:",
           lostMessage: "Я потерялся, пожалуйста, свяжитесь с моим владельцем.",
-          allergyLabel: "Важная информация",
+          allergyLabel: "Полезно знать",
           buttonPrefix: "Позвонить владельцу: ",
+          smsPrompt: "Не хотите звонить? Отправьте сообщение",
         },
         uk: {
           greeting: "Привіт! Мене звати:",
           lostMessage: "Я загубився, будь ласка, зв'яжіться з моїм власником.",
-          allergyLabel: "Важлива інформація",
+          allergyLabel: "Корисно знати",
           buttonPrefix: "Зателефонувати власнику: ",
+          smsPrompt: "Не хочете телефонувати? Надішліть повідомлення",
         },
         en: {
           greeting: "Hi! My name is:",
           lostMessage: "I'm lost, please contact my owner.",
-          allergyLabel: "Important info",
+          allergyLabel: "Good to know",
           buttonPrefix: "Call owner: ",
+          smsPrompt: "Don't want to call? Send a message",
         }
       };
       const t = translations[lang];
@@ -309,9 +329,10 @@
           <span class="call-button-name">${capitalize(name)}</span>
           <span class="call-button-number">${phone}</span>
         </a>`;
+      smsLink.innerHTML = `<a class="secondary-link" href="sms:${phone}">${t.smsPrompt}</a>`;
       allergyRow.innerHTML = `
         <div class="row callout">
-          <p class="row-label">${t.allergyLabel}</p>
+          <p class="row-label">${t.allergyLabel} – ${dog}</p>
           <p class="row-value">${allergyVal}</p>
         </div>`;
     } else {
