@@ -1,407 +1,319 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8">
-  <title>Snoutley – Löydetty koira</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#fefcf9">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Libre+Franklin:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #fefcf9;
-      --text-strong: #213731;
-      --text-black: #333333;
-      --text-muted: rgba(33, 55, 49, 0.68);
-      --text-faint: rgba(33, 55, 49, 0.5);
-      --cta-bg: #213731;
-      --cta-hover: #2c4940;
-      --cta-text: #fefcf9;
-      --badge-bg: #fefcf9;
-      --badge-border: rgba(33, 55, 49, 0.14);
-      --divider: rgba(33, 55, 49, 0.15);
-      --callout-bg: #fefcf9;
-      --callout-border: #ee8b00;
-      --focus-ring: #213731;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#213731">
+<meta name="color-scheme" content="light dark">
+<title>Löysit koiran · Snoutley</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Figtree:wght@400..700&display=swap">
+<style>
+:root{
+  --green:#213731;
+  --orange:#ee8b00;
+  --sand:#f4ebdd;
+  --ink:#333333;
+  --paper:#fefcf9;
+  --sand-muted:#c9d1cb;   /* sand mixed into green, for secondary text on green */
+  --rule:#e6dccb;
 
-    * { box-sizing: border-box; }
+  --bg:var(--paper);
+  --text:var(--ink);
+  --text-soft:#5f5a52;
 
-    html, body {
-      margin: 0;
-      min-height: 100%;
-      background-color: var(--bg);
-      color: var(--text-strong);
-      font-family: 'Libre Franklin', sans-serif;
-    }
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
 
-    a { color: inherit; }
+  --pad:clamp(20px,6vw,32px);
+  box-sizing:border-box;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#18291f;--text:var(--sand);--text-soft:#a9b5ad;--rule:#2d443b}
+}
+*,*::before,*::after{box-sizing:inherit}
+html{-webkit-text-size-adjust:100%;background:var(--green)}
+body{
+  margin:0;min-height:100svh;display:flex;flex-direction:column;
+  background:var(--bg);color:var(--text);
+  font:400 1.0625rem/1.5 var(--body);
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px}
 
-    :focus-visible {
-      outline: 2px solid var(--focus-ring);
-      outline-offset: 3px;
-    }
+/* ---------- Top: everything the finder needs ---------- */
+.tag{
+  background:var(--green);color:var(--paper);
+  display:flex;flex-direction:column;
+  min-height:max(500px,66svh);   /* same green height whatever the content */
+  padding:calc(env(safe-area-inset-top,0px) + 18px) var(--pad) 32px;
+}
+.bar{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.mark{width:30px;height:auto;color:var(--paper);display:block}
 
-    .bg-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
+.name{
+  font-family:var(--display);
+  font-variation-settings:"wdth" 75,"opsz" 96;
+  font-weight:750;
+  font-size:7.5rem;               /* JS fits this to at most two lines */
+  line-height:.86;
+  letter-spacing:.01em;
+  margin:auto 0 0;padding-top:28px;   /* pushes the content to the bottom of the green */
+  overflow-wrap:normal;hyphens:none;
+}
+.lede{
+  margin:18px 0 0;max-width:30ch;
+  font-size:1.25rem;line-height:1.4;color:var(--sand);
+}
+.lede strong{font-weight:600;color:var(--paper)}
 
-    .page {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      min-height: 100dvh;
-    }
+.actions{display:grid;gap:10px;margin-top:32px}
+.call{
+  display:grid;grid-template-columns:1fr auto;align-items:center;column-gap:16px;
+  min-height:100px;padding:20px 20px 20px 24px;border-radius:24px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 10px 24px -12px rgba(0,0,0,.55);
+  background:var(--orange);color:var(--green);text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .12s ease;
+}
+.call:active{transform:scale(.98)}
+.call-text{display:flex;flex-direction:column;min-width:0}
+.call-label{font:700 1.375rem/1.15 var(--body);white-space:nowrap}
+.call-icon{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--green);color:var(--orange);
+  display:grid;place-items:center;
+}
+.call-icon svg{width:24px;height:24px}
+.call-number{
+  font-family:var(--display);font-variation-settings:"wdth" 85,"opsz" 32;
+  font-weight:600;font-size:1.375rem;line-height:1.2;margin-top:4px;
+  font-variant-numeric:tabular-nums;letter-spacing:.01em;
+}
+.sms{
+  display:block;padding:10px 2px;
+  color:var(--paper);font:500 1.0625rem/1.4 var(--body);
+  text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;
+  -webkit-tap-highlight-color:transparent;
+}
 
-    .content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2.5rem 1.5rem;
-    }
+/* ---------- Below: owner's note + provenance ---------- */
+.note{padding:36px var(--pad) 8px;max-width:40rem}
+.note h2{
+  margin:0 0 6px;font:600 .9375rem/1.3 var(--body);color:var(--text-soft);
+}
+.note p{margin:0;font-size:1.1875rem;line-height:1.5;white-space:pre-line;max-width:34em}
 
-    .content-inner {
-      width: 100%;
-      max-width: 420px;
-      background-color: var(--badge-bg);
-      box-shadow: 0 2px 12px rgba(33, 55, 49, 0.1);
-      border-radius: 12px;
-      padding: 2rem 1.5rem;
-    }
+.foot{
+  margin-top:auto;padding:36px var(--pad) calc(env(safe-area-inset-bottom,0px) + 28px);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+}
+.foot p{margin:0;max-width:30ch;font-size:.875rem;line-height:1.45;color:var(--text-soft)}
+.wordmark{flex:none;display:block;color:var(--green);text-decoration:none}
+.wordmark svg{width:104px;height:auto;display:block}
+.powered{display:block;margin:0 0 -6px 2px;font-size:.8125rem;line-height:1;color:var(--text-soft)}
+@media (prefers-color-scheme:dark){.wordmark{color:var(--sand)}}
 
-    /* ---------- Dog name badge ---------- */
-    .dog-name-badge {
-      display: block;
-      width: 100%;
-      text-align: center;
-      text-decoration: none;
-    }
-
-    .greeting {
-      font-family: 'Libre Franklin', sans-serif;
-      font-weight: 500;
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      margin: 0 0 0.5rem;
-      line-height: 1.4;
-    }
-
-    .dog-name {
-      font-family: 'Archivo Black', sans-serif;
-      font-size: clamp(2.2rem, 10vw, 2.8rem);
-      line-height: 1.15;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: var(--text-strong);
-      margin: 0;
-      overflow-wrap: break-word;
-    }
-
-    .lost-message {
-      font-family: 'Libre Franklin', sans-serif;
-      font-weight: 600;
-      font-size: 0.98rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin: 0.7rem 0 0;
-      line-height: 1.5;
-    }
-
-    .hero-title {
-      font-family: 'Libre Franklin', sans-serif;
-      font-weight: 600;
-      font-size: clamp(1.3rem, 5.5vw, 1.7rem);
-      color: var(--text-strong);
-      text-align: center;
-      margin: 0;
-      line-height: 1.3;
-    }
-
-    /* ---------- Button ---------- */
-    .call-button {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      width: 100%;
-      padding: 1.6rem 1rem;
-      margin-top: 2rem;
-      background-color: var(--cta-bg);
-      text-decoration: none;
-      border-radius: 8px;
-      box-shadow: 0 6px 16px rgba(33, 55, 49, 0.22);
-      transition: background-color 0.2s ease;
-    }
-
-    .call-button:hover { background-color: var(--cta-hover); }
-
-    .call-button-label {
-      font-family: 'Libre Franklin', sans-serif;
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--cta-text);
-      opacity: 0.85;
-    }
-
-    .call-button-name {
-      font-family: 'Libre Franklin', sans-serif;
-      font-weight: 600;
-      font-size: 1.2rem;
-      color: var(--cta-text);
-    }
-
-    .call-button-number {
-      font-family: 'Libre Franklin', sans-serif;
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--cta-text);
-      opacity: 0.85;
-    }
-
-    /* ---------- Rows ---------- */
-    .row {
-      text-align: center;
-      margin-top: 1.4rem;
-    }
-
-    .row-label {
-      font-family: 'Libre Franklin', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      margin: 0 0 0.35rem;
-    }
-
-    .row-value {
-      font-family: 'Libre Franklin', sans-serif;
-      font-weight: 400;
-      font-size: 1.25rem;
-      color: var(--text-strong);
-      margin: 0;
-      line-height: 1.3;
-    }
-
-    .callout {
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    .callout .row-label { color: var(--text-black); }
-    .callout .row-value { color: var(--text-black); }
-
-    .secondary-text {
-      display: block;
-      text-align: center;
-      margin-top: 1rem;
-      font-family: 'Libre Franklin', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 400;
-      color: var(--text-faint);
-    }
-
-    .secondary-text a {
-      color: var(--text-faint);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .secondary-text a:hover { color: var(--text-muted); }
-
-    /* ---------- Footer ---------- */
-    .footer {
-      text-align: center;
-      padding: 0 1.5rem 2rem;
-    }
-
-    .logo {
-      max-width: 84px;
-      margin-bottom: 0.7rem;
-    }
-
-    .powered-by {
-      font-size: 0.72rem;
-      color: var(--text-faint);
-      margin: 0;
-    }
-
-    .powered-by a {
-      text-decoration: none;
-      border-bottom: 1px solid var(--divider);
-    }
-    .powered-by a:hover { border-bottom-color: var(--text-faint); }
-  </style>
+@media (min-width:640px){
+  .tag,.note,.foot{padding-left:max(var(--pad),calc((100vw - 560px)/2));padding-right:max(var(--pad),calc((100vw - 560px)/2))}
+}
+@media (prefers-reduced-motion:reduce){.call{transition:none}}
+[hidden]{display:none!important}
+</style>
 </head>
 <body>
-  <canvas class="bg-canvas" id="bg-canvas"></canvas>
-  <div class="page">
-    <div class="content">
-      <div class="content-inner">
-        <div id="name-block"></div>
-        <div id="allergy-row"></div>
-        <div id="call-button"></div>
-        <div id="sms-link"></div>
-      </div>
+
+<main>
+  <section class="tag" aria-labelledby="pet">
+    <div class="bar">
+      <svg class="mark" viewBox="0 0 13.229166 17.197917" aria-hidden="true"><path fill="currentColor" d="m 9.8417906,13.081018 -0.2015374,0.995799 c -0.1206111,0.595105 0.7897008,0.779133 0.9097958,0.183924 L 10.751585,13.26546 C 10.872006,12.67073 9.9625746,12.486394 9.8417906,13.081018 Z m -2.4182082,-2.53602 c -0.6688595,1.513175 2.1515789,3.266726 3.0267796,3.045425 1.100055,-0.278173 2.145223,-2.776407 0.915481,-3.7422803 C 10.4401,9.1210226 7.8951741,9.4781157 7.4235824,10.544998 Z m 2.9247006,-0.1285 c 1.191452,0.315825 0.474214,1.698904 -0.125973,2.273967 -0.7167967,-0.102079 -2.1525941,-1.311203 -1.9496218,-1.770367 0.1340135,-0.30324 1.2755371,-0.585213 2.0755368,-0.50366 z M 6.441853,4.1897037 C 6.1395235,4.5473216 6.3198569,4.9688572 6.3997227,5.1167485 6.5936874,5.4759475 6.9040784,5.513996 7.095786,5.3305619 7.2768838,5.1572884 7.4485399,4.6520444 7.1769382,4.2380849 6.8755959,3.7787753 6.6126206,4.0274835 6.441854,4.1897034 Z M 3.0583747,0.62399748 c -0.4487554,0.008045 -1.283447,0.34676799 -1.7233922,1.07267292 -0.8572621,1.4145058 -1.40875486,3.8636728 -1.1009083,5.346713 0.50275941,2.422127 2.7399,1.7469405 3.256233,1.5366932 C 5.0775774,7.9337527 4.4965729,6.27935 2.8970126,4.2740514 2.5185982,3.7995399 1.7928599,4.3782178 2.1711599,4.8528117 2.7971344,5.6375634 3.1658432,6.240714 3.3456878,6.6718915 3.9528249,8.1275835 1.6724396,8.587612 1.3127483,6.8547619 1.139489,6.0197341 1.2221241,5.5280575 1.4842744,4.1519726 1.592825,3.4988043 2.3743327,0.66349412 3.7474948,1.9388613 4.0061026,2.1390404 4.8165492,3.4957726 5.1253342,4.1097307 5.2591561,3.7669787 5.4250264,3.4371553 5.6252794,3.1284964 4.9410282,1.9916925 4.1395345,0.60477619 3.0582789,0.62400511 Z M 4.5401694,3.8708701 C 4.3493797,3.8609475 4.1892962,3.9716173 4.0743283,4.1076088 3.9593614,4.2436004 3.880045,4.4115657 3.8643189,4.579177 3.843547,4.8011066 3.9031844,5.0599983 4.0208717,5.2779379 4.138559,5.4958777 4.3313888,5.6887839 4.589808,5.6788664 4.7066478,5.6743895 4.8107106,5.6207432 4.887641,5.5471328 4.9645704,5.473522 5.0191971,5.3810087 5.0613763,5.2817564 5.1457347,5.0832519 5.1794643,4.8565684 5.1644724,4.6689087 5.1511881,4.5033726 5.0894394,4.3240061 4.9888271,4.1706119 4.8882148,4.0172177 4.7386209,3.8812281 4.5401694,3.8708701 Z M 8.2987064,1.6500013 C 7.7678233,1.6456025 7.1621603,1.8556252 6.6115013,2.2494627 5.9982569,2.6880645 5.4915923,3.4947752 5.2125772,4.2711494 5.2935632,4.4618309 5.327637,4.6758937 5.3094476,4.8674577 5.2960461,5.0759514 5.2359297,5.3086843 5.118,5.4930996 c 0.125781,0.8637965 0.6943986,1.7579182 1.9127108,2.4192267 1.0524819,0.5713015 2.0627103,1.0164412 2.8950267,1.4164702 0.6266065,0.00575 1.3249865,0.1182952 1.7473965,0.6229002 0.329996,0.3977923 0.421815,0.9117393 0.375332,1.4163333 0.03771,0.171115 0.06739,0.350837 0.08654,0.534209 0.07179,0.689009 0.01723,1.420947 -0.105678,1.817023 -0.17862,0.577507 -0.609569,1.026688 -1.206041,1.334633 C 10.226814,15.361842 9.7084663,15.36714 8.9184024,15.34917 7.338266,15.313237 5.8186957,14.743491 4.9837177,13.203786 4.4942239,12.346737 4.585897,11.404417 4.8808131,10.516835 5.0782059,9.6745314 4.0853027,9.416827 3.7595904,9.9232777 3.0115279,11.459826 3.4517331,13.029923 3.7758754,13.627548 c 1.0152068,1.872023 3.0403732,2.757614 4.9271431,2.788937 1.8867895,0.03132 3.6915615,-0.795849 4.1966375,-2.427865 0.167134,-0.539883 0.229201,-1.362651 0.139948,-2.187967 -0.08922,-0.825314 -0.323929,-1.653411 -0.84566,-2.160961 l -0.0038,-0.00364 C 11.205772,8.7240608 9.4015159,8.1629424 7.4650851,7.1118226 6.6643949,6.677199 6.253683,6.1701798 6.0842526,5.6636871 5.9148212,5.1571943 5.9829766,4.6344266 6.2012263,4.1544129 6.4195151,3.6744009 6.7908651,3.2446037 7.2006768,2.9550819 7.6105081,2.6655601 7.9924287,2.6779317 8.340996,2.723456 8.8965376,2.796015 9.4444556,3.3624078 9.7863037,4.1060599 9.9572658,4.4778867 10.043404,4.8562016 10.020022,5.1407556 9.9967091,5.4244092 9.8976871,5.5992046 9.6526548,5.6997757 9.0437875,6.0428767 8.1673008,5.8463682 8.2573923,4.3115073 8.2897378,3.9285082 7.7895062,3.857822 7.7017099,4.1579398 7.3568513,5.3367822 7.9680303,7.3872848 10.183995,6.5190861 10.711719,6.3245814 11.181586,5.8069198 11.270457,5.3198723 11.359478,4.8324668 11.260877,4.2874798 11.046062,3.763031 10.618177,2.7141355 9.5670754,1.801654 8.5207781,1.6650066 8.4484137,1.6556226 8.3741294,1.6504565 8.2982978,1.6498827 Z"/></svg>
     </div>
-    <div class="footer">
-      <img src="green_snoutley.svg" alt="Snoutley logo" class="logo">
-      <p class="powered-by">powered by <a href="https://snoutley.fi" target="_blank">Snoutley</a></p>
+
+    <h1 class="name" id="pet"></h1>
+    <p class="lede" id="lede"></p>
+
+    <div class="actions" id="actions">
+      <a class="call" id="call" href="#">
+        <span class="call-text">
+          <span class="call-label" data-t="call"></span>
+          <span class="call-number" id="number"></span>
+        </span>
+        <span class="call-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span>
+      </a>
+      <a class="sms" id="sms" href="#" data-t="sms"></a>
     </div>
-  </div>
+    <p class="lede" id="nophone" hidden data-t="noPhone"></p>
+  </section>
 
-  <script>
-    const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
+  <section class="note" id="noteWrap" hidden>
+    <h2 data-t="noteTitle"></h2>
+    <p id="note"></p>
+  </section>
+</main>
 
-    const nameBlock = document.getElementById("name-block");
-    const allergyRow = document.getElementById("allergy-row");
-    const callButton = document.getElementById("call-button");
-    const smsLink = document.getElementById("sms-link");
+<footer class="foot">
+  <p id="privacy" data-t="privacy"></p>
+  <a class="wordmark" id="wordmark" href="https://snoutley.fi" target="_blank" rel="noopener" aria-label="powered by Snoutley">
+    <span class="powered">powered by</span>
+    <svg viewBox="0 0 52.916665 26.458333" aria-hidden="true"><path fill="currentColor" transform="translate(-0.26188725,-0.1648475)" d="M 4.2878942,7.5656544 C 2.9697959,7.6061328 1.7641923,8.577707 1.458779,10.015039 c -0.4340079,2.044671 1.2871012,3.138177 2.5248282,3.583546 1.3663224,0.485867 2.0517759,1.396569 2.0485307,2.064625 -0.01506,3.100048 -4.5122218,3.027849 -3.1218342,-0.494403 0.3015523,-0.763919 -1.8372902,-1.165634 -1.8372902,1.223184 0,2.105398 1.3662073,2.996096 3.1183135,2.996096 1.896777,0 3.2150005,-1.174235 3.3114478,-3.380856 C 7.6313694,13.112307 5.7668774,12.748223 4.4005558,12.161143 3.8218788,11.918211 2.8500304,11.382206 2.9143273,10.471218 3.011548,8.6346761 5.886202,8.7281552 5.8505716,10.42394 5.8212382,11.036183 7.0996571,11.173759 7.088341,10.039181 7.0561936,9.3711159 6.6025075,8.5374974 6.216722,8.1933407 5.6058961,7.6669861 4.8987208,7.5656544 4.2878942,7.5656544 Z M 29.174551,8.7390455 c -0.232446,0.00512 -0.424205,0.028162 -0.461209,0.077958 -0.101175,1.9938625 -0.100607,10.3857505 0,10.4438355 0.176223,0.101742 1.219174,0.121952 1.430401,0 0.145734,-0.08414 0.08709,-8.273334 0,-10.4438355 -0.08183,-0.045785 -0.581783,-0.086497 -0.969192,-0.077958 z m -2.823079,0.00553 c -0.30858,-0.00612 -0.60984,0.022059 -0.693072,0.1031056 -0.0486,0.047331 0,2.6611279 0,2.6611279 0,0 -0.577005,-0.05556 -0.600023,0 -0.04997,0.120595 -0.05622,1.278011 0,1.353449 0.03552,0.04766 0.600023,0 0.600023,0 0,1.925947 -0.07259,4.411391 -0.0166,6.289438 0.0089,0.298716 1.533263,0.176626 1.531997,0.08299 l -0.085,-6.372425 c 0,0 0.951579,0.06331 0.984281,0 0.07029,-0.136082 0.105705,-1.226131 0,-1.353449 -0.05838,-0.07032 -0.984281,0 -0.984281,0 0,0 0.0732,-2.6244452 0,-2.6611279 -0.1129,-0.056576 -0.428751,-0.096988 -0.737329,-0.1031056 z M 10.747833,11.585764 c -1.1297149,0 -1.6321213,0.589551 -1.7839774,0.769017 0,0 -0.5637894,-0.629144 -0.6075682,-0.677983 -0.2024656,-0.225869 -0.9196482,0.341988 -0.9696949,0.746887 -0.064665,0.523195 0.9807599,1.24129 0.9807599,1.24129 0,0 -0.1111528,0.601871 -0.1111528,1.165847 l 0.015592,4.430017 c 0.08228,0.08228 1.3720148,0.05839 1.4304009,0 0.058387,-0.05838 0,-4.414425 0,-4.414425 0,-0.780196 0.050743,-1.892112 0.9405225,-1.892112 0.651431,0 0.82774,0.550873 0.811768,1.549097 -0.0094,0.5847 -0.02931,4.566079 0.03169,4.75744 0.061,0.19136 1.248219,0.182684 1.430903,0 0.182685,-0.182684 0,-4.768002 0,-4.768002 -0.02321,-1.406435 -0.457492,-2.899481 -2.169239,-2.907073 z m 5.506841,0 c -1.584861,0.0076 -2.639233,1.46369 -2.676218,3.937626 -0.03012,2.014928 0.621655,3.962875 2.676218,3.952714 2.152717,-0.01065 2.754137,-2.151457 2.691809,-3.952714 -0.0753,-2.175864 -0.478493,-3.948273 -2.691809,-3.937626 z m 17.119038,0 c -1.770328,0.02897 -2.280529,1.02196 -2.430272,2.045513 -0.06807,0.613306 -0.08684,1.229042 -0.07695,1.84584 0.0211,0.359129 0.02642,0.719426 0.04627,1.076825 0.02051,0.99465 0.236128,1.72239 0.646296,2.183826 0.420421,0.461435 0.999407,0.692063 1.737705,0.692063 1.017276,-0.02457 1.643025,-0.37004 2.403114,-1.126616 0.143553,-0.230718 -0.917761,-1.102075 -1.030553,-0.938008 -0.468645,0.444428 -0.75787,0.730414 -1.387649,0.696088 -0.563975,0 -0.877001,-0.482105 -0.938512,-1.445993 0.391647,0 0.783424,-0.01506 1.168864,-0.09254 0.55598,-0.09812 1.250316,-0.381699 1.72312,-1.138184 0.392324,-0.647331 0.568349,-2.295374 -0.41544,-3.22997 -0.539707,-0.512711 -1.187233,-0.56884 -1.445992,-0.56884 z m -13.041089,0.08802 c -0.315202,-0.0033 -0.633414,0.0359 -0.724756,0.127247 -0.182685,0.182685 0,4.768003 0,4.768003 0.02323,1.405523 0.458887,2.897194 2.168737,2.907073 1.129716,0 1.632132,-0.589561 1.783977,-0.769017 0,0 0.56381,0.628639 0.607568,0.677478 0.202461,0.225871 0.919629,-0.341986 0.969694,-0.746886 0.06467,-0.523196 -0.980256,-1.240787 -0.980256,-1.240787 0,0 0.11065,-0.602373 0.11065,-1.16635 l -0.01559,-4.429514 c -0.08228,-0.08228 -1.372005,-0.05839 -1.4304,0 -0.0584,0.05838 0,4.414426 0,4.414426 -0.01065,1.131587 -0.155856,1.891609 -1.045641,1.891609 -0.64802,0 -0.738337,-0.987661 -0.738337,-1.538032 0,0 0.156603,-4.611406 0,-4.768003 -0.0783,-0.0783 -0.390441,-0.123986 -0.705644,-0.127247 z m 16.297715,0.377215 c -0.305381,0.0077 -0.586651,0.05079 -0.642775,0.122218 -0.112248,0.142848 0,3.783722 0,3.783722 0,1.560533 0.270592,2.966091 1.312206,3.584551 0.594449,0.334379 1.316706,0.443455 2.095809,-0.04627 -0.128254,1.859765 -0.787808,1.922289 -1.168864,1.922289 -0.735932,-0.08006 -1.23376,-0.776246 -1.75883,-1.205078 -0.162722,-0.155157 -1.287291,0.559063 -1.169368,0.861561 0.583174,0.936955 1.790841,1.668594 2.928198,1.712557 1.171877,0 2.274578,-0.514813 2.507224,-2.337729 0.383218,-2.734422 0.203509,-8.228264 0.09204,-8.29069 -0.133021,-0.0432 -1.227532,-0.130083 -1.399721,0 -0.114677,0.08667 0.122338,3.85908 -0.0171,4.75241 -0.07587,0.629826 -0.311717,1.533506 -0.999369,1.533506 -0.857819,0 -0.847055,-1.080898 -0.914873,-1.487234 -0.18324,-1.098648 0.05439,-4.656825 -0.07695,-4.814274 -0.152799,-0.07127 -0.482244,-0.09919 -0.787626,-0.09154 z m -20.375664,0.888217 c 1.209067,0 1.25331,1.520751 1.245816,2.584177 -0.003,0.419535 0.187381,2.562378 -1.245816,2.583673 -1.165184,0.01731 -1.214711,-2.024595 -1.245817,-2.583673 -0.04518,-0.812076 0.07222,-2.584177 1.245817,-2.584177 z m 17.103949,0.01509 c 0.785231,0.124391 0.916887,1.20222 0.568842,1.676847 -0.42455,0.499978 -0.950308,0.61336 -1.581287,0.612095 -0.05762,-0.368068 -0.0077,-0.757162 -0.003,-1.135167 0.04625,-0.485646 0.249417,-1.153775 1.015463,-1.153775 z"/></svg>
+  </a>
+</footer>
 
-    const lang = navigator.language.startsWith("ru") ? "ru" :
-                 navigator.language.startsWith("uk") ? "uk" :
-                 navigator.language.startsWith("sv") ? "sv" :
-                 navigator.language.startsWith("fi") ? "fi" : "en";
-    const raw = location.hash.substring(1).replace(/\+/g, ' ');
-    const data = decodeURIComponent(raw).split("|");
+<script>
 
-    if (data.length >= 4) {
-      const [name, phone, dog, allergyVal] = data;
-      const translations = {
-        fi: {
-          greeting: "Hei! Nimeni on:",
-          lostMessage: "Olen eksynyt, ole hyvä ja ota yhteyttä omistajaani.",
-          allergyLabel: "Hyvä tietää",
-          buttonPrefix: "Soita omistajalle: ",
-          smsPrefix: "Etkö halua soittaa? Lähetä ",
-          smsLinkWord: "viesti",
-          smsBody: `Hei! Löysin koirasi: ${dog}. `,
-        },
-        sv: {
-          greeting: "Hej! Mitt namn är:",
-          lostMessage: "Jag är vilse, kontakta gärna min ägare.",
-          allergyLabel: "Bra att veta",
-          buttonPrefix: "Ring ägaren: ",
-          smsPrefix: "Vill du inte ringa? Skicka ett ",
-          smsLinkWord: "meddelande",
-          smsBody: `Hej! Jag har hittat din hund ${dog}. `,
-        },
-        ru: {
-          greeting: "Привет! Меня зовут:",
-          lostMessage: "Я потерялся, пожалуйста, свяжитесь с моим владельцем.",
-          allergyLabel: "Полезно знать",
-          buttonPrefix: "Позвонить владельцу: ",
-          smsPrefix: "Не хотите звонить? Отправьте ",
-          smsLinkWord: "сообщение",
-          smsBody: `Здравствуйте! Ваша собака ${dog} найдена. `,
-        },
-        uk: {
-          greeting: "Привіт! Мене звати:",
-          lostMessage: "Я загубився, будь ласка, зв'яжіться з моїм власником.",
-          allergyLabel: "Корисно знати",
-          buttonPrefix: "Зателефонувати власнику: ",
-          smsPrefix: "Не хочете телефонувати? Надішліть ",
-          smsLinkWord: "повідомлення",
-          smsBody: `Вітаю! Вашу собаку ${dog} знайдено. `,
-        },
-        en: {
-          greeting: "Hi! My name is:",
-          lostMessage: "I'm lost, please contact my owner.",
-          allergyLabel: "Good to know",
-          buttonPrefix: "Call owner: ",
-          smsPrefix: "Don't want to call? Send a ",
-          smsLinkWord: "message",
-          smsBody: `Hi! I found your dog ${dog}. `,
-        }
-      };
-      const t = translations[lang];
+/* Shown when the URL has no tag data (e.g. opening snoutley.online directly).
+   Set to null before going live to show the "empty tag" screen instead. */
+const PLACEHOLDER = { owner:"Sampo", phone:"0458711994", pet:"Elli", notes:"Ei allergioita." };
 
-      nameBlock.innerHTML = `
-        <a class="dog-name-badge" href="tel:${phone}">
-          <p class="greeting">${t.greeting}</p>
-          <p class="dog-name">${dog}</p>
-          <p class="lost-message">${t.lostMessage}</p>
-        </a>
-      `;
-      callButton.innerHTML = `
-        <a class="call-button" href="tel:${phone}">
-          <span class="call-button-label">${t.buttonPrefix}</span>
-          <span class="call-button-name">${capitalize(name)}</span>
-          <span class="call-button-number">${phone}</span>
-        </a>`;
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-      const smsSeparator = isIOS ? '&' : '?';
-      const smsHref = `sms:${phone}${smsSeparator}body=${encodeURIComponent(t.smsBody)}`;
-      smsLink.innerHTML = `<p class="secondary-text">${t.smsPrefix}<a href="${smsHref}">${t.smsLinkWord}</a></p>`;
-      allergyRow.innerHTML = `
-        <div class="row callout">
-          <p class="row-label">${t.allergyLabel} – ${dog}</p>
-          <p class="row-value">${allergyVal}</p>
-        </div>`;
-    } else {
-      nameBlock.innerHTML = `<p class="hero-title">Virhe: tietojen lukeminen epäonnistui.</p>`;
+const T = {
+  fi:{
+    title:"Löysit koiran",
+    lede:o=> o ? `Koira on eksynyt kotoa. Omistaja on <strong>${o}</strong>.` : "Koira on eksynyt kotoa.",
+    call:"Soita omistajalle",
+    sms:"Etkö halua soittaa? Lähetä viesti.",
+    smsBody:p=> `Löysin koirasi ${p}.`,
+    noPhone:"Omistaja ei ole lisännyt puhelinnumeroa. Eläinlääkäri tai löytöeläintalo voi lukea koiran sirun ja tavoittaa omistajan.",
+    noteTitle:"Omistajan viesti",
+    privacy:"Tiedot luettiin koiran Podi-tunnisteesta. Ne näkyvät vain tällä sivulla eivätkä tallennu minnekään.",
+    dog:"Koira"
+  },
+  sv:{
+    title:"Du hittade en hund",
+    lede:o=> o ? `Hunden är borta hemifrån. Ägaren heter <strong>${o}</strong>.` : "Hunden är borta hemifrån.",
+    call:"Ring ägaren",
+    sms:"Vill du inte ringa? Skicka ett meddelande.",
+    smsBody:p=> `Jag har hittat din hund ${p}.`,
+    noPhone:"Ägaren har inte lagt till ett telefonnummer. En veterinär eller ett djurhem kan läsa hundens mikrochip och nå ägaren.",
+    noteTitle:"Meddelande från ägaren",
+    privacy:"Uppgifterna lästes från hundens Podi-bricka. De visas bara på den här sidan och sparas inte någonstans.",
+    dog:"Hund"
+  },
+  ru:{
+    title:"Вы нашли собаку",
+    lede:o=> o ? `Собака потерялась. Владелец: <strong>${o}</strong>.` : "Собака потерялась.",
+    call:"Позвонить владельцу",
+    sms:"Не хотите звонить? Напишите.",
+    smsBody:p=> `Ваша собака ${p} найдена.`,
+    noPhone:"Владелец не указал номер телефона. Ветеринар или приют для животных может считать микрочип собаки и связаться с владельцем.",
+    noteTitle:"Сообщение от владельца",
+    privacy:"Эти данные считаны с метки Podi на ошейнике. Они показаны только на этой странице и нигде не сохраняются.",
+    dog:"Собака"
+  },
+  uk:{
+    title:"Ви знайшли собаку",
+    lede:o=> o ? `Собака загубилася. Власник: <strong>${o}</strong>.` : "Собака загубилася.",
+    call:"Зателефонувати власнику",
+    sms:"Не хочете телефонувати? Напишіть.",
+    smsBody:p=> `Вашу собаку ${p} знайдено.`,
+    noPhone:"Власник не вказав номер телефону. Ветеринар або притулок для тварин може зчитати мікрочип собаки й зв'язатися з власником.",
+    noteTitle:"Повідомлення від власника",
+    privacy:"Ці дані зчитано з мітки Podi на нашийнику. Вони показані лише на цій сторінці й ніде не зберігаються.",
+    dog:"Собака"
+  },
+  en:{
+    title:"You found a dog",
+    lede:o=> o ? `This dog is away from home. The owner is <strong>${o}</strong>.` : "This dog is away from home.",
+    call:"Call the owner",
+    sms:"Don't want to call? Send a message.",
+    smsBody:p=> `I found your dog ${p}.`,
+    noPhone:"The owner hasn't added a phone number. A vet or animal shelter can read the dog's microchip and reach the owner.",
+    noteTitle:"Note from the owner",
+    privacy:"This was read from the dog's Podi tag. It is shown only on this page and is not stored anywhere.",
+    dog:"Dog"
+  }
+};
+
+/* Tag payload: #owner|phone|pet|notes, each field encodeURIComponent'd, "|" stored as %7C */
+function readTag(){
+  const raw = location.hash.slice(1).replace(/\+/g," ");
+  if(!raw) return PLACEHOLDER;
+  const parts = /%7c/i.test(raw) ? raw.split(/%7c/i) : raw.split("|");
+  const dec = s => { try{ return decodeURIComponent(s||"").trim() }catch{ return (s||"").trim() } };
+  const [owner,phone,pet,notes] = parts.map(dec);
+  if(!owner && !phone && !pet && !notes) return null;
+  return {owner,phone,pet,notes};
+}
+
+const esc = s => s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const dial = p => p.replace(/[^\d+]/g,"");
+function pretty(p){
+  const d = dial(p);
+  if(d.startsWith("+358")){ const r=d.slice(4); return `+358 ${r.slice(0,2)} ${r.slice(2,5)} ${r.slice(5)}`.trim() }
+  if(/^0\d{6,}$/.test(d)) return `${d.slice(0,3)} ${d.slice(3,6)} ${d.slice(6)}`;
+  return p;
+}
+
+const nav = (navigator.language||"fi").toLowerCase();
+const local = ["fi","sv","ru","uk"].find(l => nav.startsWith(l)) || "en";
+const lang = local;
+
+const tag = readTag();
+const $ = id => document.getElementById(id);
+
+function fitName(){
+  const el = $("pet");
+  if(!el.textContent) return;
+  /* short names get a wider cut so they don't turn into vertical bars */
+  el.style.fontVariationSettings = `"wdth" ${el.textContent.length <= 6 ? 92 : 75},"opsz" 96`;
+  let size = 120;
+  const fits = () => {
+    el.style.fontSize = size+"px";
+    const lines = Math.round((el.clientHeight - parseFloat(getComputedStyle(el).paddingTop)) / (size*0.86));
+    el.dataset.lines = lines;
+    return el.scrollWidth <= el.clientWidth && lines <= 2;
+  };
+  while(!fits() && size > 40) size -= 2;
+  /* two-line names stay a bit smaller so the green block keeps its height */
+  if(el.dataset.lines === "2" && size > 88){ size = 88; fits() }
+}
+
+function render(){
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-t]").forEach(n => { const v=t[n.dataset.t]; if(typeof v==="string") n.textContent=v });
+
+  if(!tag){
+    document.title = "Snoutley";
+    document.body.hidden = true;   /* nothing on the tag, nothing on the page */
+    document.documentElement.style.background = "#fefcf9";
+    return;
+  } else {
+    const pet = tag.pet ? cap(tag.pet) : t.dog;
+    document.title = `${pet} · ${t.title}`;
+    $("pet").textContent = pet;
+    $("lede").innerHTML = t.lede(tag.owner ? esc(cap(tag.owner)) : "");
+    const has = !!dial(tag.phone||"");
+    $("actions").hidden = !has; $("nophone").hidden = has;
+    if(has){
+      $("call").href = "tel:"+dial(tag.phone);
+      $("number").textContent = pretty(tag.phone);
+      const sep = /iPad|iPhone|iPod/.test(navigator.userAgent) ? "&" : "?";
+      $("sms").href = `sms:${dial(tag.phone)}${sep}body=${encodeURIComponent(t.smsBody(tag.pet ? cap(tag.pet) : ""))}`;
     }
+    $("noteWrap").hidden = !tag.notes;
+    $("note").textContent = tag.notes || "";
+  }
+  fitName();
+  fitCall();
+}
 
-    // Seeded random — always produces the same pattern
-    function seededRandom(seed) {
-      let s = seed;
-      return function() {
-        s = (s * 16807 + 0) % 2147483647;
-        return (s - 1) / 2147483646;
-      };
-    }
+/* keep the call label on one line in every language (Russian, Ukrainian run long) */
+function fitCall(){
+  const el = document.querySelector(".call-label");
+  let size = 22; el.style.fontSize = size+"px";
+  while(el.scrollWidth > el.clientWidth && size > 16){ size -= 1; el.style.fontSize = size+"px" }
+}
 
-    // Full-page background pattern. The mark's white detail lines
-    // blend into the cream page background, leaving its dark green
-    // fill visible at low opacity across the whole page.
-    const canvas = document.getElementById("bg-canvas");
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    img.src = "favicon.svg";
 
-    function drawPattern() {
-      const rand = seededRandom(42);
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.globalAlpha = 0.06;
 
-      const iconSize = 27;
-      const spacing = 60;
-      const cols = Math.ceil(canvas.width / spacing) + 2;
-      const rows = Math.ceil(canvas.height / spacing) + 2;
-
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-          const x = col * spacing + (rand() * 18 - 9);
-          const y = row * spacing + (col % 2 === 0 ? 0 : spacing / 2) + (rand() * 18 - 9);
-          const angle = rand() * Math.PI * 2;
-          ctx.save();
-          ctx.translate(x, y);
-          ctx.rotate(angle);
-          ctx.drawImage(img, -iconSize / 2, -iconSize / 2, iconSize, iconSize);
-          ctx.restore();
-        }
-      }
-    }
-
-    img.onload = drawPattern;
-    window.addEventListener('resize', drawPattern);
-  </script>
+addEventListener("hashchange", () => location.reload());
+addEventListener("resize", () => { fitName(); fitCall() });
+document.fonts && document.fonts.ready.then(fitName);
+render();
+</script>
 </body>
 </html>
