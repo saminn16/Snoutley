@@ -40,19 +40,18 @@ body::before{
   background:var(--green);z-index:-1;pointer-events:none;
 }
 body{
-  margin:0;min-height:100svh;display:flex;flex-direction:column;
+  margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;
   color:var(--text);
   font:400 1.0625rem/1.5 var(--body);
 }
 .sheet{flex:1;display:flex;flex-direction:column;background:var(--bg)}
+main{background:var(--bg)}   /* shows behind the green block's rounded corners */
 
 /* Dark mode: the lower part goes much deeper than the brand green so the
    split stays clear, and the green block gets rounded bottom corners so it
    reads as one solid piece, like the tag itself. */
 @media (prefers-color-scheme:dark){
   :root{--bg:#0d1613;--text:var(--sand);--text-soft:#93a39a}
-  main{background:var(--bg)}
-  .tag{border-radius:0 0 32px 32px}
   .call{box-shadow:inset 0 1px 0 rgba(255,255,255,.28)}
   .sheet .wordmark{color:var(--sand)}
   .sheet .powered{color:var(--text-soft)}
@@ -64,7 +63,10 @@ a{color:inherit}
 .tag{
   background:var(--green);color:var(--paper);
   display:flex;flex-direction:column;
-  min-height:max(500px,66svh);   /* same green height whatever the content */
+  /* fills the screen minus room for the note and footer, so the page fits the phone */
+  min-height:max(400px, calc(100vh - 320px));
+  min-height:max(400px, calc(100dvh - 320px));
+  border-radius:0 0 32px 32px;
   padding:calc(env(safe-area-inset-top,0px) + 18px) var(--pad) 32px;
 }
 .bar{display:flex;align-items:center;justify-content:space-between;min-height:44px}
@@ -124,7 +126,7 @@ a{color:inherit}
 .note p{margin:0;font-size:1.1875rem;line-height:1.5;white-space:pre-line;max-width:34em}
 
 .foot{
-  margin-top:auto;padding:36px var(--pad) calc(env(safe-area-inset-bottom,0px) + 72px);
+  margin-top:auto;padding:36px var(--pad) calc(max(env(safe-area-inset-bottom,0px), 34px) + 58px);
   display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
 }
 .foot p{margin:0;max-width:30ch;font-size:.875rem;line-height:1.45;color:var(--text-soft)}
@@ -277,7 +279,7 @@ function fitName(){
   if(!el.textContent) return;
   /* short names get a wider cut so they don't turn into vertical bars */
   el.style.fontVariationSettings = `"wdth" ${el.textContent.length <= 6 ? 92 : 75},"opsz" 96`;
-  let size = 120;
+  let size = Math.max(64, Math.min(120, Math.round(innerHeight * 0.14)));
   const fits = () => {
     el.style.fontSize = size+"px";
     const lines = Math.round((el.clientHeight - parseFloat(getComputedStyle(el).paddingTop)) / (size*0.86));
